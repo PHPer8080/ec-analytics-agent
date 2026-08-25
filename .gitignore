@@ -35,6 +35,7 @@ coverage.xml
 *.key
 service-account*.json
 credentials*.json
+application_default_credentials.json
 
 # Virtualenv
 .venv
