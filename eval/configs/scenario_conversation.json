@@ -2,7 +2,7 @@
   "userSimulatorConfig": {
     "type": "llm_backed",
     "model": "gemini-2.5-flash",
-    "maxAllowedInvocations": 5,
+    "maxAllowedInvocations": 4,
     "includeFunctionCalls": false
   },
   "criteria": {

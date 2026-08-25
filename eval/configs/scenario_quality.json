@@ -77,24 +77,6 @@
       },
       "rubrics": [
         {
-          "rubricId": "skill_declared",
-          "rubricContent": {
-            "textProperty": "分析を開始する前に「[スキル選択] ...」形式でスキルの選択結果を宣言している。"
-          }
-        },
-        {
-          "rubricId": "declared_skill_loaded",
-          "rubricContent": {
-            "textProperty": "スキルを使用すると宣言した場合、同じスキル名で load_skill を呼んでいる。アドホック分析と宣言した場合はこの項目を満たすものとする。"
-          }
-        },
-        {
-          "rubricId": "skill_loaded_before_query",
-          "rubricContent": {
-            "textProperty": "load_skill を呼ぶ場合、ask_data_agent より前に呼んでいる。load_skill を呼ばない場合はこの項目を満たすものとする。"
-          }
-        },
-        {
           "rubricId": "references_loaded",
           "rubricContent": {
             "textProperty": "読み込んだスキル本文が references のファイルを参照している場合、load_skill_resource でそのファイルを読み込んでいる。参照がない場合はこの項目を満たすものとする。"
@@ -114,14 +96,8 @@
         }
       ]
     },
-    "hallucinations_v1": {
-      "threshold": 0.8,
-      "judgeModelOptions": {
-        "judgeModel": "gemini-2.5-flash",
-        "numSamples": 3
-      }
-    },
-    "response_format": 1.0
+    "response_format": 1.0,
+    "agent_completion": 1.0
   },
   "customMetrics": {
     "response_format": {
@@ -129,6 +105,12 @@
         "name": "eval.metrics.response_format"
       },
       "description": "数値に単位が付いているか"
+    },
+    "agent_completion": {
+      "codeConfig": {
+        "name": "eval.metrics.agent_completion"
+      },
+      "description": "エージェントが応答を完遂しているか"
     }
   }
 }

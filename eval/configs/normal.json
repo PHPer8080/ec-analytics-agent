@@ -11,8 +11,7 @@
     "hallucinations_v1": {
       "threshold": 0.8,
       "judgeModelOptions": {
-        "judgeModel": "gemini-2.5-flash",
-        "numSamples": 3
+        "judgeModel": "gemini-2.5-flash"
       }
     },
     "response_format": 1.0
