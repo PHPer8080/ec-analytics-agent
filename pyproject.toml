@@ -1,5 +1,5 @@
 [project]
-name = "data-analysis-agent"
+name = "ec-analytics-agent"
 version = "0.1.0"
 description = "EC data analysis agent (Google ADK + Gemini + Conversational Analytics)"
 readme = "README.md"
