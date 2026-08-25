@@ -1,0 +1,32 @@
+[project]
+name = "data-analysis-agent"
+version = "0.1.0"
+description = "EC data analysis agent (Google ADK + Gemini + Conversational Analytics)"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+dependencies = [
+    "google-adk[bigquery-analytics,eval]==2.7.1",
+    "google-cloud-geminidataanalytics==0.12.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff==0.15.12",
+    "pytest==9.0.3",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ec_analytics_agent", "data_agents", "model_armor"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "UP", "B"]

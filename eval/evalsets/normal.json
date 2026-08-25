@@ -1,0 +1,100 @@
+{
+  "eval_set_id": "ec_analytics_normal",
+  "name": "単体 / 正常系",
+  "description": "模範解答と突き合わせて数値の正確性と応答品質を検証する",
+  "eval_cases": [
+    {
+      "eval_id": "totals",
+      "conversation": [
+        {
+          "invocation_id": "1",
+          "user_content": {
+            "parts": [
+              {
+                "text": "全期間の注文数・顧客数・売上合計を教えて"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "[スキル選択] なし（アドホック分析）。理由: 単一の集計値取得のため\n\n**結論**: 全期間で注文 61,948 件、顧客 935 人、売上 671,425 ドルです。\n\n**根拠**: 2024-09-01 〜 2025-08-31 の全注文 61,948 件を集計しました。\n\n**示唆**: 平均注文単価は 10.84 ドルです。"
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "args": {
+                  "project_id": "<project_id>"
+                },
+                "name": "list_accessible_data_agents"
+              },
+              {
+                "args": {
+                  "data_agent_name": "<data_agent_name>",
+                  "query": "<query>"
+                },
+                "name": "ask_data_agent"
+              }
+            ],
+            "tool_responses": [],
+            "intermediate_responses": []
+          },
+          "creation_timestamp": 0.0
+        }
+      ],
+      "creation_timestamp": 0.0,
+      "final_session_state": {}
+    },
+    {
+      "eval_id": "store_compare",
+      "conversation": [
+        {
+          "invocation_id": "1",
+          "user_content": {
+            "parts": [
+              {
+                "text": "Philadelphia と Brooklyn の売上を比較して"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "[スキル選択] metric-interpretation を使用します。理由: 店舗間の差の意味づけが必要なため\n\n**結論**: Philadelphia が 450,970 ドル、Brooklyn が 220,456 ドルで約 2 倍の差です。\n\n**根拠**: 注文数は Philadelphia 39,931 件、Brooklyn 22,017 件です。\n\n**示唆**: 差は主に注文数によるものです。"
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "args": {
+                  "project_id": "<project_id>"
+                },
+                "name": "list_accessible_data_agents"
+              },
+              {
+                "args": {
+                  "data_agent_name": "<data_agent_name>",
+                  "query": "<query>"
+                },
+                "name": "ask_data_agent"
+              }
+            ],
+            "tool_responses": [],
+            "intermediate_responses": []
+          },
+          "creation_timestamp": 0.0
+        }
+      ],
+      "creation_timestamp": 0.0,
+      "final_session_state": {}
+    }
+  ],
+  "creation_timestamp": 0.0
+}

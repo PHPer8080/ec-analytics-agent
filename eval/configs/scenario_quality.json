@@ -1,0 +1,134 @@
+{
+  "userSimulatorConfig": {
+    "type": "llm_backed",
+    "model": "gemini-2.5-flash",
+    "maxAllowedInvocations": 5,
+    "includeFunctionCalls": false
+  },
+  "criteria": {
+    "rubric_based_final_response_quality_v1": {
+      "threshold": 0.7,
+      "judgeModelOptions": {
+        "judgeModel": "gemini-2.5-flash",
+        "numSamples": 3
+      },
+      "rubrics": [
+        {
+          "rubricId": "conclusion_at_top",
+          "rubricContent": {
+            "textProperty": "最終応答の冒頭に結論が置かれている。"
+          }
+        },
+        {
+          "rubricId": "directly_answers",
+          "rubricContent": {
+            "textProperty": "最終応答はユーザーが尋ねた対象そのものに答えており、別の指標や期間にすり替えていない。"
+          }
+        },
+        {
+          "rubricId": "period_stated",
+          "rubricContent": {
+            "textProperty": "最終応答は集計対象の期間を明示している。"
+          }
+        },
+        {
+          "rubricId": "condition_stated",
+          "rubricContent": {
+            "textProperty": "最終応答は集計対象の絞り込み条件（店舗・商品・顧客区分など）を明示している。"
+          }
+        },
+        {
+          "rubricId": "sample_size_stated",
+          "rubricContent": {
+            "textProperty": "最終応答は集計の母数（件数・人数）を明示している。"
+          }
+        },
+        {
+          "rubricId": "insight_or_next_action",
+          "rubricContent": {
+            "textProperty": "最終応答は数値の意味づけ、または次に確認すべきことのいずれかを述べている。"
+          }
+        },
+        {
+          "rubricId": "no_unsupported_claim",
+          "rubricContent": {
+            "textProperty": "最終応答は取得済みデータで裏付けられない主張をしていない。"
+          }
+        },
+        {
+          "rubricId": "small_sample_caveat",
+          "rubricContent": {
+            "textProperty": "母数が小さい数値に言及する場合、最終応答はその数値が不安定である旨を注意喚起している。母数が小さい数値に言及していない場合はこの項目を満たすものとする。"
+          }
+        },
+        {
+          "rubricId": "japanese_only",
+          "rubricContent": {
+            "textProperty": "最終応答は日本語で書かれている。"
+          }
+        }
+      ]
+    },
+    "rubric_based_tool_use_quality_v1": {
+      "threshold": 0.7,
+      "judgeModelOptions": {
+        "judgeModel": "gemini-2.5-flash",
+        "numSamples": 3
+      },
+      "rubrics": [
+        {
+          "rubricId": "skill_declared",
+          "rubricContent": {
+            "textProperty": "分析を開始する前に「[スキル選択] ...」形式でスキルの選択結果を宣言している。"
+          }
+        },
+        {
+          "rubricId": "declared_skill_loaded",
+          "rubricContent": {
+            "textProperty": "スキルを使用すると宣言した場合、同じスキル名で load_skill を呼んでいる。アドホック分析と宣言した場合はこの項目を満たすものとする。"
+          }
+        },
+        {
+          "rubricId": "skill_loaded_before_query",
+          "rubricContent": {
+            "textProperty": "load_skill を呼ぶ場合、ask_data_agent より前に呼んでいる。load_skill を呼ばない場合はこの項目を満たすものとする。"
+          }
+        },
+        {
+          "rubricId": "references_loaded",
+          "rubricContent": {
+            "textProperty": "読み込んだスキル本文が references のファイルを参照している場合、load_skill_resource でそのファイルを読み込んでいる。参照がない場合はこの項目を満たすものとする。"
+          }
+        },
+        {
+          "rubricId": "one_aggregation_per_query",
+          "rubricContent": {
+            "textProperty": "ask_data_agent への 1 回の問いに含まれる集計は 1 つだけである。"
+          }
+        },
+        {
+          "rubricId": "query_specifies_scope",
+          "rubricContent": {
+            "textProperty": "ask_data_agent への問いは期間・対象・粒度を明示している。"
+          }
+        }
+      ]
+    },
+    "hallucinations_v1": {
+      "threshold": 0.8,
+      "judgeModelOptions": {
+        "judgeModel": "gemini-2.5-flash",
+        "numSamples": 3
+      }
+    },
+    "response_format": 1.0
+  },
+  "customMetrics": {
+    "response_format": {
+      "codeConfig": {
+        "name": "eval.metrics.response_format"
+      },
+      "description": "数値に単位が付いているか"
+    }
+  }
+}

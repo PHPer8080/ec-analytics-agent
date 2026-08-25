@@ -1,0 +1,19 @@
+# Hadolint設定 - Dockerfileセキュリティ・ベストプラクティス
+# https://github.com/hadolint/hadolint
+
+# 無視するルール（プロジェクト固有の調整）
+ignored:
+  # DL3008: Pin versions in apt get install（Ubuntuベースイメージで許可）
+  - DL3008
+  # DL3009: Delete the apt-get lists after installing（マルチステージビルドで許可）
+  - DL3009
+
+# 信頼できるレジストリ（セキュリティ強化）
+trustedRegistries:
+  - docker.io
+  - gcr.io
+  - asia-northeast1-docker.pkg.dev
+  - us-docker.pkg.dev
+
+# 厳格度設定
+failure-threshold: error

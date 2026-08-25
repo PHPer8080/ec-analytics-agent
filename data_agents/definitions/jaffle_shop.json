@@ -1,0 +1,50 @@
+{
+  "displayName": "EC分析エージェント（jaffle-shop テストデータ）",
+  "description": "Jaffle Shop のテストデータを対象とした EC 分析用 Data Agent。注文・明細・顧客・商品・店舗・原材料を参照する。",
+  "dataAnalyticsAgent": {
+    "publishedContext": {
+      "datasourceReferences": {
+        "bq": {
+          "tableReferences": [
+            {
+              "projectId": "${PROJECT_ID}",
+              "datasetId": "${DATASET_ID}",
+              "tableId": "orders"
+            },
+            {
+              "projectId": "${PROJECT_ID}",
+              "datasetId": "${DATASET_ID}",
+              "tableId": "order_items"
+            },
+            {
+              "projectId": "${PROJECT_ID}",
+              "datasetId": "${DATASET_ID}",
+              "tableId": "customers"
+            },
+            {
+              "projectId": "${PROJECT_ID}",
+              "datasetId": "${DATASET_ID}",
+              "tableId": "products"
+            },
+            {
+              "projectId": "${PROJECT_ID}",
+              "datasetId": "${DATASET_ID}",
+              "tableId": "locations"
+            },
+            {
+              "projectId": "${PROJECT_ID}",
+              "datasetId": "${DATASET_ID}",
+              "tableId": "supplies"
+            }
+          ]
+        }
+      },
+      "options": {
+        "datasource": {
+          "bigQueryMaxBilledBytes": "10737418240"
+        }
+      },
+      "systemInstruction": "あなたはECサイトのデータ分析アシスタントです。BigQueryのデータに基づいて正確に回答してください。\n\n## 応答ルール\n- 日本語で応答する\n- 数値には単位を付ける（ドル、%、人、件）\n- 根拠（期間・条件・件数）を明示する\n\n## データの前提\nカラム名と型はスキーマを参照すること。以下はスキーマから読み取れない前提のみ記す。\n\n- 対象は Jaffle Shop（ホットサンドとドリンクの店舗チェーン）のテストデータ\n- データ範囲は 2024-09-01 〜 2025-08-31、注文 61,948 件、顧客 935 人、6 店舗\n- 金額は米ドル。`*_cents` はセント単位の整数なので、集計には `subtotal` / `tax_paid` / `order_total` を使う\n- 売上は税込の `order_total`。税抜で見る場合のみ `subtotal`\n- `orders.customer_order_number` はその顧客にとって何回目の注文か（1=初回）。F2転換 = 2 に到達した顧客\n- `customers.customer_type` は new（1回のみ）/ returning（2回以上）\n- `products.product_type` は jaffle（フード）/ beverage（ドリンク）\n\n## テーブル\n- orders: 注文（1行=1注文）\n- order_items: 注文明細（1行=1商品）\n- customers: 顧客ディメンション（通算購入額・注文数を保持）\n- products: 商品マスタ\n- locations: 店舗マスタ\n- supplies: 原材料マスタ（1行=商品×原材料）"
+    }
+  }
+}

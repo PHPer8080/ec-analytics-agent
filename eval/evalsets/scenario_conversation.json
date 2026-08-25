@@ -1,0 +1,17 @@
+{
+  "eval_set_id": "ec_analytics_scenario_conversation",
+  "name": "シナリオ / 対話運び",
+  "description": "曖昧な依頼からの要件明確化と多ターンの進行を検証する",
+  "eval_cases": [
+    {
+      "eval_id": "ambiguous_then_clarify",
+      "conversation_scenario": {
+        "starting_prompt": "売上をいい感じに分析して",
+        "conversation_plan": "あなたは EC 事業の担当者です。日本語で、1 ターンにつき 1 つだけ依頼してください。\n1. 意図的に曖昧な依頼から始める。\n2. エージェントが分析の観点を確認してきたら、「月次の推移で見たい」と答える。\n3. 回答を受けて、前年同月比でも見たいと依頼する。"
+      },
+      "creation_timestamp": 0.0,
+      "final_session_state": {}
+    }
+  ],
+  "creation_timestamp": 0.0
+}

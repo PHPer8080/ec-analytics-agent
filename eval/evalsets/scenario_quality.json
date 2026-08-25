@@ -1,0 +1,17 @@
+{
+  "eval_set_id": "ec_analytics_scenario_quality",
+  "name": "シナリオ / 回答品質",
+  "description": "深掘り依頼を重ね、回答品質とツール利用を検証する",
+  "eval_cases": [
+    {
+      "eval_id": "drilldown_store_gap",
+      "conversation_scenario": {
+        "starting_prompt": "店舗別の売上を教えて",
+        "conversation_plan": "あなたは EC 事業の担当者です。日本語で、1 ターンにつき 1 つだけ依頼してください。\n1. 店舗別の売上を尋ねる。\n2. 回答に含まれる店舗間の差について、その原因を掘り下げるよう依頼する。\n3. さらに商品別に分解するよう依頼する。\n4. 最後に、その結果を踏まえて何をすべきか助言を求める。\nエージェントの回答に含まれる数値や店舗名を踏まえて次の依頼を組み立てること。"
+      },
+      "creation_timestamp": 0.0,
+      "final_session_state": {}
+    }
+  ],
+  "creation_timestamp": 0.0
+}

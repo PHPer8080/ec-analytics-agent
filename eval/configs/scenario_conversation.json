@@ -1,0 +1,38 @@
+{
+  "userSimulatorConfig": {
+    "type": "llm_backed",
+    "model": "gemini-2.5-flash",
+    "maxAllowedInvocations": 5,
+    "includeFunctionCalls": false
+  },
+  "criteria": {
+    "multi_turn_task_success_v1": {
+      "threshold": 0.7,
+      "judgeModelOptions": {
+        "judgeModel": "gemini-2.5-flash",
+        "numSamples": 3
+      }
+    },
+    "multi_turn_trajectory_quality_v1": {
+      "threshold": 0.7,
+      "judgeModelOptions": {
+        "judgeModel": "gemini-2.5-flash",
+        "numSamples": 3
+      }
+    },
+    "multi_turn_tool_use_quality_v1": {
+      "threshold": 0.7,
+      "judgeModelOptions": {
+        "judgeModel": "gemini-2.5-flash",
+        "numSamples": 3
+      }
+    },
+    "per_turn_user_simulator_quality_v1": {
+      "threshold": 0.8,
+      "judgeModelOptions": {
+        "judgeModel": "gemini-2.5-flash",
+        "numSamples": 3
+      }
+    }
+  }
+}
