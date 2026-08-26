@@ -20,19 +20,55 @@
         "numSamples": 3
       }
     },
-    "multi_turn_tool_use_quality_v1": {
-      "threshold": 0.7,
-      "judgeModelOptions": {
-        "judgeModel": "gemini-2.5-flash",
-        "numSamples": 3
-      }
-    },
     "per_turn_user_simulator_quality_v1": {
       "threshold": 0.8,
       "judgeModelOptions": {
         "judgeModel": "gemini-2.5-flash",
         "numSamples": 3
       }
+    },
+    "rubric_based_tool_use_quality_v1": {
+      "threshold": 0.7,
+      "judgeModelOptions": {
+        "judgeModel": "gemini-2.5-flash",
+        "numSamples": 3
+      },
+      "rubrics": [
+        {
+          "rubricId": "no_premature_query",
+          "rubricContent": {
+            "textProperty": "要件が曖昧なまま ask_data_agent を呼んでいない。分析の観点（指標・期間・粒度のいずれか）が未確定の場合は、推測で集計せずユーザーに確認している。"
+          }
+        },
+        {
+          "rubricId": "query_specifies_scope",
+          "rubricContent": {
+            "textProperty": "ask_data_agent への問いは期間・対象・粒度を明示している。"
+          }
+        },
+        {
+          "rubricId": "one_aggregation_per_query",
+          "rubricContent": {
+            "textProperty": "ask_data_agent への 1 回の問いが求めている分析指標は 1 つだけである。その指標の母数（件数・人数）を併せて求めることは 1 つとして扱う。判定は問いの文面に対して行い、Data Agent が生成した SQL の集計関数の数は見ない。"
+          }
+        }
+      ]
+    },
+    "tool_call_integrity": 1.0,
+    "agent_completion": 1.0
+  },
+  "customMetrics": {
+    "tool_call_integrity": {
+      "codeConfig": {
+        "name": "eval.metrics.tool_call_integrity"
+      },
+      "description": "ツール呼び出しをテキストとして出力していないか"
+    },
+    "agent_completion": {
+      "codeConfig": {
+        "name": "eval.metrics.agent_completion"
+      },
+      "description": "エージェントが応答を完遂しているか"
     }
   }
 }

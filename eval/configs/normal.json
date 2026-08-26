@@ -15,7 +15,9 @@
       }
     },
     "response_format": 1.0,
-    "skill_declaration": 1.0
+    "skill_declaration": 1.0,
+    "tool_call_integrity": 1.0,
+    "agent_completion": 1.0
   },
   "customMetrics": {
     "numeric_accuracy": {
@@ -35,6 +37,18 @@
         "name": "eval.metrics.skill_declaration"
       },
       "description": "[スキル選択] の宣言とスキルのロードが規定どおりか"
+    },
+    "tool_call_integrity": {
+      "codeConfig": {
+        "name": "eval.metrics.tool_call_integrity"
+      },
+      "description": "ツール呼び出しをテキストとして出力していないか"
+    },
+    "agent_completion": {
+      "codeConfig": {
+        "name": "eval.metrics.agent_completion"
+      },
+      "description": "エージェントが応答を完遂しているか"
     }
   }
 }

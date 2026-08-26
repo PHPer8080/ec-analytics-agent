@@ -52,7 +52,7 @@
         {
           "rubricId": "no_unsupported_claim",
           "rubricContent": {
-            "textProperty": "最終応答は取得済みデータで裏付けられない主張をしていない。"
+            "textProperty": "最終応答は、この会話の中で取得済みのデータ、または推定・仮説であると明示した内容だけで構成されている。当該ターンでツールを呼んでいない場合も、先行ターンで取得したデータは取得済みとして扱う。"
           }
         },
         {
@@ -85,7 +85,7 @@
         {
           "rubricId": "one_aggregation_per_query",
           "rubricContent": {
-            "textProperty": "ask_data_agent への 1 回の問いに含まれる集計は 1 つだけである。"
+            "textProperty": "ask_data_agent への 1 回の問いが求めている分析指標は 1 つだけである。その指標の母数（件数・人数）を併せて求めることは 1 つとして扱う。判定は問いの文面に対して行い、Data Agent が生成した SQL の集計関数の数は見ない。"
           }
         },
         {
@@ -98,7 +98,8 @@
     },
     "response_format": 1.0,
     "agent_completion": 1.0,
-    "skill_declaration": 1.0
+    "skill_declaration": 1.0,
+    "tool_call_integrity": 1.0
   },
   "customMetrics": {
     "response_format": {
@@ -118,6 +119,12 @@
         "name": "eval.metrics.skill_declaration"
       },
       "description": "[スキル選択] の宣言とスキルのロードが規定どおりか"
+    },
+    "tool_call_integrity": {
+      "codeConfig": {
+        "name": "eval.metrics.tool_call_integrity"
+      },
+      "description": "ツール呼び出しをテキストとして出力していないか"
     }
   }
 }
