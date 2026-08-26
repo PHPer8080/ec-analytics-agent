@@ -15,7 +15,7 @@
       }
     },
     "response_format": 1.0,
-    "skill_declaration": 1.0,
+    "skill_usage": 1.0,
     "tool_call_integrity": 1.0,
     "agent_completion": 1.0
   },
@@ -32,11 +32,11 @@
       },
       "description": "数値に単位が付いているか"
     },
-    "skill_declaration": {
+    "skill_usage": {
       "codeConfig": {
-        "name": "eval.metrics.skill_declaration"
+        "name": "eval.metrics.skill_usage"
       },
-      "description": "[スキル選択] の宣言とスキルのロードが規定どおりか"
+      "description": "response-format のロードと分析スキルのロード順が規定どおりか"
     },
     "tool_call_integrity": {
       "codeConfig": {
