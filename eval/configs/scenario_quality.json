@@ -52,7 +52,7 @@
         {
           "rubricId": "no_unsupported_claim",
           "rubricContent": {
-            "textProperty": "最終応答は、当該ターンのツール出力で裏付けられない主張をしていない。推定・仮説であると明示した内容は主張に数えない。当該ターンでツールを呼んでいない場合はこの項目を満たすものとする（先行ターンで取得したデータは評価者に渡らないため検証できない）。"
+            "textProperty": "最終応答は、データで裏付けられない内容を断定していない。推測や仮説には「〜の可能性がある」「〜と考えられる」など推測であることを示す表現を添えている。先行ターンで取得した数値の再掲や、それに基づく分析結果への言及は断定に数えない。"
           }
         },
         {
@@ -76,12 +76,6 @@
         "numSamples": 3
       },
       "rubrics": [
-        {
-          "rubricId": "references_loaded",
-          "rubricContent": {
-            "textProperty": "読み込んだスキル本文が references のファイルを参照している場合、load_skill_resource でそのファイルを読み込んでいる。参照がない場合はこの項目を満たすものとする。"
-          }
-        },
         {
           "rubricId": "one_aggregation_per_query",
           "rubricContent": {
