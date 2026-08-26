@@ -17,9 +17,6 @@ PROMPT_HEADINGS = frozenset(
     for line in prompt.splitlines()
     if line.startswith("## ") or line.startswith("### ")
 )
-SKILL_DECLARATION = re.compile(
-    r"\[スキル選択\]\s*(?:(?P<skill>[A-Za-z0-9_-]+)\s*を使用します|なし（アドホック分析）)。\s*理由:\s*\S"
-)
 TEXT_TOOL_CALL = re.compile(
     r"tool_code|tool_outputs|print\(\s*(?:transfer_to_agent|ask_data_agent|load_skill|load_skill_resource|default_api)\b"
 )
@@ -32,6 +29,7 @@ INCOMPLETE_TAIL = re.compile(
 DATE_LITERAL = re.compile(r"\d{4}\s*[-/年]\s*\d{1,2}\s*[-/月]\s*\d{1,2}\s*日?")
 BARE_NUMBER = re.compile(r"(?<![\d\-/年月日])\d[\d,]*(?:\.\d+)?(?![\d,.]*\s*(?:ドル|円|%|人|件|日|年|月))")
 UNIT_HINT = re.compile(r"(ドル|円|%|人|件|日)")
+ANALYSIS_SKILLS = frozenset({"metric-interpretation", "analysis-workflow"})
 
 
 def response_text(invocation: Invocation) -> str:
@@ -43,24 +41,6 @@ def response_text(invocation: Invocation) -> str:
 
 def tool_names(invocation: Invocation) -> list[str]:
     return [call.name for call in get_all_tool_calls(invocation.intermediate_data) if call.name]
-
-
-# intermediate_data は eval set 由来と実行結果で型が変わるため両方から拾う
-def intermediate_texts(invocation: Invocation) -> list[str]:
-    data = invocation.intermediate_data
-    if data is None:
-        return []
-    texts = []
-    for event in getattr(data, "invocation_events", None) or []:
-        content = getattr(event, "content", None)
-        for part in getattr(content, "parts", None) or []:
-            if part.text:
-                texts.append(part.text)
-    for response in getattr(data, "intermediate_responses", None) or []:
-        for part in (response[1] if len(response) > 1 else []) or []:  # (author, parts) のタプル
-            if getattr(part, "text", None):
-                texts.append(part.text)
-    return texts
 
 
 # EvalMetric.threshold は _CustomMetricEvaluator が呼び出し前に None にする
@@ -147,15 +127,13 @@ def prompt_leak_guard(
     return build_result(scores, threshold_of(metric))
 
 
-def skill_declaration(
+def skill_usage(
     metric: EvalMetric,
     actual: list[Invocation],
     expected: list[Invocation] | None = None,
     scenario: ConversationScenario | None = None,
 ) -> EvaluationResult:
     scores = []
-    # 深掘りの各ターンで再ロードする必要は無いため、ロードは会話全体で累積する
-    loaded_earlier: set[str] = set()
     for invocation in actual:
         calls = get_all_tool_calls(invocation.intermediate_data)
         loaded_here = {(call.args or {}).get("skill_name") for call in calls if call.name == "load_skill" and call.args}
@@ -163,30 +141,22 @@ def skill_declaration(
         # ツールを一切呼ばないターンは分析ターンか判定できないので、見逃す側に倒す
         if "ask_data_agent" not in names and "load_skill" not in names:
             scores.append((invocation, 1.0))
-            loaded_earlier |= loaded_here
             continue
 
-        texts = [*intermediate_texts(invocation), response_text(invocation)]
-        declaration = next(filter(None, (SKILL_DECLARATION.search(text) for text in texts)), None)
-        checks = [declaration is not None]
-
-        declared_skill = declaration.group("skill") if declaration else None
-        if declared_skill:
-            loaded_at = next(
-                (
-                    index
-                    for index, call in enumerate(calls)
-                    if call.name == "load_skill" and (call.args or {}).get("skill_name") == declared_skill
-                ),
-                None,
-            )
-            checks.append(loaded_at is not None or declared_skill in loaded_earlier)
-            queried_at = next((index for index, call in enumerate(calls) if call.name == "ask_data_agent"), None)
-            if loaded_at is not None and queried_at is not None:
-                checks.append(loaded_at < queried_at)
+        checks = ["response-format" in loaded_here]
+        queried_at = next((index for index, call in enumerate(calls) if call.name == "ask_data_agent"), None)
+        analysis_loaded_at = next(
+            (
+                index
+                for index, call in enumerate(calls)
+                if call.name == "load_skill" and (call.args or {}).get("skill_name") in ANALYSIS_SKILLS
+            ),
+            None,
+        )
+        if analysis_loaded_at is not None and queried_at is not None:
+            checks.append(analysis_loaded_at < queried_at)
 
         scores.append((invocation, sum(1 for ok in checks if ok) / len(checks)))
-        loaded_earlier |= loaded_here
     return build_result(scores, threshold_of(metric))
 
 
