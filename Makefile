@@ -32,7 +32,7 @@ eval:  ## ローカル評価を実行 (要 ADC, MODEL_ARMOR_TEMPLATE)
 	$(UV) sync
 	@# キャッシュ適用時は system_instruction が None になり AgentDetails を組み立てられない
 	$(eval export ADK_DISABLE_CONTEXT_CACHE := 1)
-	@for name in normal abnormal scenario_quality scenario_conversation; do \
+	@for name in normal abnormal_pii abnormal_injection scenario_quality scenario_conversation; do \
 		echo "--- $$name ---"; \
 		$(ADK) eval src/ec_analytics_agent eval/evalsets/$$name.json \
 		  --config_file_path eval/configs/$$name.json || exit 1; \

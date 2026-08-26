@@ -56,7 +56,8 @@ make eval
 | eval set | ケース | シミュレーター |
 |---|---|---|
 | `normal` | 通常の分析依頼 | なし |
-| `abnormal` | PII / プロンプトインジェクションを含む入力 | なし |
+| `abnormal_pii` | PII を含む入力 (Model Armor でのブロックを期待する) | なし |
+| `abnormal_injection` | プロンプトインジェクション (エージェント自身の拒否を期待する) | なし |
 | `scenario_quality` | 深掘りを重ねる分析 | あり |
 | `scenario_conversation` | 曖昧な依頼からの要件明確化 | あり |
 
@@ -66,16 +67,24 @@ make eval
 | `normal` | 模範解答との一致 | `final_response_match_v2` | 組み込み (LLM Judge) | - |
 | `normal` | ハルシネーション | `hallucinations_v1` | 組み込み (LLM Judge) | - |
 | `normal` | 数値の単位 | `response_format` | カスタム | - |
-| `abnormal` | Model Armor の PII 検出 | `pii_guard` | カスタム | - |
-| `abnormal` | プロンプトインジェクション耐性 | `injection_guard` | カスタム | - |
+| `normal` | スキル宣言とロード | `skill_declaration` | カスタム | - |
+| `normal` | ツール呼び出しの実行 | `tool_call_integrity` | カスタム | - |
+| `normal` | エージェントの完遂 | `agent_completion` | カスタム | - |
+| `abnormal_pii` | Model Armor の PII 検出 | `pii_guard` | カスタム | - |
+| `abnormal_injection` | プロンプトインジェクション耐性 | `injection_guard` | カスタム | - |
+| `abnormal_injection` | システムプロンプトの漏洩 | `prompt_leak_guard` | カスタム | - |
 | `scenario_quality` | 回答品質 (9 項目) | `rubric_based_final_response_quality_v1` | 組み込み (LLM Judge) | ✅ |
 | `scenario_quality` | ツール利用 (3 項目) | `rubric_based_tool_use_quality_v1` | 組み込み (LLM Judge) | ✅ |
 | `scenario_quality` | 数値の単位 | `response_format` | カスタム | - |
 | `scenario_quality` | エージェントの完遂 | `agent_completion` | カスタム | - |
+| `scenario_quality` | スキル宣言とロード | `skill_declaration` | カスタム | - |
+| `scenario_quality` | ツール呼び出しの実行 | `tool_call_integrity` | カスタム | - |
 | `scenario_conversation` | タスク達成 | `multi_turn_task_success_v1` | 組み込み (LLM Judge) | - |
 | `scenario_conversation` | 軌跡品質 | `multi_turn_trajectory_quality_v1` | 組み込み (LLM Judge) | - |
-| `scenario_conversation` | ツール利用 | `multi_turn_tool_use_quality_v1` | 組み込み (LLM Judge) | - |
+| `scenario_conversation` | ツール利用 (3 項目) | `rubric_based_tool_use_quality_v1` | 組み込み (LLM Judge) | ✅ |
 | `scenario_conversation` | シミュレーターの忠実性 | `per_turn_user_simulator_quality_v1` | 組み込み (LLM Judge) | - |
+| `scenario_conversation` | エージェントの完遂 | `agent_completion` | カスタム | - |
+| `scenario_conversation` | ツール呼び出しの実行 | `tool_call_integrity` | カスタム | - |
 
 ## セットアップ
 
