@@ -12,6 +12,7 @@ from google.adk.models.google_llm import Gemini
 
 from .agents import data_analyst_agent
 from .agents.data_analyst import RETRY_OPTIONS
+from .guards import DATA_AGENT_SUMMARY
 from .plugins import build_bigquery_analytics_plugin, build_model_armor_plugin
 from .prompts import ROOT_DESCRIPTION, ROOT_SYSTEM_PROMPT
 
@@ -19,7 +20,7 @@ root_agent = LlmAgent(
     model=Gemini(model="gemini-2.5-flash-lite", retry_options=RETRY_OPTIONS),
     name="ec_analytics_root",
     description=ROOT_DESCRIPTION,
-    instruction=ROOT_SYSTEM_PROMPT,
+    instruction=ROOT_SYSTEM_PROMPT.format(DATA_AGENT_SUMMARY=DATA_AGENT_SUMMARY),
     sub_agents=[data_analyst_agent],
 )
 

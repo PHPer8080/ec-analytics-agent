@@ -28,13 +28,7 @@
             "tool_uses": [
               {
                 "args": {
-                  "project_id": "<project_id>"
-                },
-                "name": "list_accessible_data_agents"
-              },
-              {
-                "args": {
-                  "data_agent_name": "<data_agent_name>",
+                  "data_agent_name": "projects/phper8080-dev/locations/global/dataAgents/ec-analytics-jaffle-shop",
                   "query": "<query>"
                 },
                 "name": "ask_data_agent"
@@ -74,13 +68,7 @@
             "tool_uses": [
               {
                 "args": {
-                  "project_id": "<project_id>"
-                },
-                "name": "list_accessible_data_agents"
-              },
-              {
-                "args": {
-                  "data_agent_name": "<data_agent_name>",
+                  "data_agent_name": "projects/phper8080-dev/locations/global/dataAgents/ec-analytics-jaffle-shop",
                   "query": "<query>"
                 },
                 "name": "ask_data_agent"

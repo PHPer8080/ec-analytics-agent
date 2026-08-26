@@ -32,12 +32,14 @@ App (name="ec_analytics_agent")
             ├─ model: gemini-2.5-flash
             ├─ planner: thinking_budget=8000
             ├─ tools: DataAgentToolset, SkillToolset
-            └─ before_tool_callback: block_destructive_sql_intent
+            └─ before_tool_callback: [block_destructive_sql_intent, restrict_data_agent]
 ```
 
 - EC データ分析以外の依頼は Root で弾き、DataAnalyst 側でも再判定する
 - handoff の判断材料は各エージェントの `description` (ADK が `transfer_to_agent` の指示に埋め込む)
-- 破壊的 SQL 意図は `before_tool_callback` で遮断する
+- 破壊的 SQL 意図と許可外の Data Agent 参照は `before_tool_callback` で遮断する
+- 参照できる Data Agent は `data_agents/definitions/*.json` 由来の固定リスト。探索系ツールは公開せず、選択肢をプロンプトの表として渡して最適なものを選ばせる
+- Root にも参照可能なデータの要約を渡し、handoff 可否と提案内容の根拠にする (リソース名は渡さない)
 - スキルは Progressive Disclosure で段階ロードする
 
 ## エージェント品質評価
