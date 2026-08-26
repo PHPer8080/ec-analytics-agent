@@ -1,12 +1,3 @@
-"""DataAnalystAgent 定義
-
-ユーザー対応の主担当。要件が曖昧な場合のみ Root Agent にエスカレーションする。
-
-参照できる Data Agent は固定リストに限定する。探索系ツールは公開せず、
-選択肢をプロンプトの表として渡してモデルに選ばせる
-(許可リストと表の導出は guards/data_agent_allowlist.py)。
-"""
-
 import google.auth
 from google.adk.agents.llm_agent import LlmAgent
 from google.adk.models.google_llm import Gemini

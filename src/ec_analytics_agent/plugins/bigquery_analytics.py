@@ -1,8 +1,3 @@
-"""行動ログを BigQuery に記録する `BigQueryAgentAnalyticsPlugin` の組み立て
-
-env var と事前準備は README を参照。データセットはプラグインが作らないため事前に用意する。
-"""
-
 import logging
 import os
 
@@ -27,7 +22,6 @@ def env_bool(key: str, default: bool = False) -> bool:
 
 
 def build_bigquery_analytics_plugin() -> BigQueryAgentAnalyticsPlugin | None:
-    """AGENT_ANALYTICS_DATASET が設定されていればプラグインを返す。未設定なら None"""
     dataset_id = os.environ.get("AGENT_ANALYTICS_DATASET")
     if not dataset_id:
         logger.info("AGENT_ANALYTICS_DATASET が未設定のため、行動ログの BigQuery 記録は無効です。")

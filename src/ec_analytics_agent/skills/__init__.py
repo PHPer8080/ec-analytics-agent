@@ -1,9 +1,3 @@
-"""SkillToolset 定義
-
-ADK の段階的開示により、起動時は L1 (frontmatter) のみロードし、
-実行時に L2 (本文)、必要時に L3 (references) をロードする。
-"""
-
 import pathlib
 
 from google.adk.skills import load_skill_from_dir

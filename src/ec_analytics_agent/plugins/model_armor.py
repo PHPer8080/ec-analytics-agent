@@ -1,10 +1,3 @@
-"""Model Armor による入出力サニタイズプラグイン
-
-before_model_callback で入力を、after_model_callback で応答を sanitize API に通し、
-PII・インジェクション・RAI・悪意ある URI の一致をブロックする。
-有効化は MODEL_ARMOR_TEMPLATE env var の有無で切り替える。
-"""
-
 import logging
 import os
 
@@ -38,16 +31,6 @@ def last_text(parts: list[types.Part] | None) -> str | None:
 
 
 class ModelArmorPlugin(BasePlugin):
-    """Model Armor の sanitize API をモデル呼び出しの前後に適用する
-
-    Args:
-      template_id: Model Armor テンプレート ID
-      project_id: 未指定なら GOOGLE_CLOUD_PROJECT → ADC の順で解決
-      location: 未指定なら MODEL_ARMOR_LOCATION (既定 us-central1)
-      fail_closed: sanitize API 失敗時にブロックするか
-      name: プラグイン名
-    """
-
     def __init__(
         self,
         *,
@@ -72,7 +55,6 @@ class ModelArmorPlugin(BasePlugin):
         )
 
     def check(self, method: str, key: str, text: str) -> LlmResponse | None:
-        """テキストを検査する。一致があればブロック用の応答を返す。問題なければ None"""
         try:
             response = self.session.post(f"{self.url}:{method}", json={key: {"text": text}}, timeout=TIMEOUT_SECONDS)
             response.raise_for_status()
@@ -109,7 +91,6 @@ class ModelArmorPlugin(BasePlugin):
 
 
 def build_model_armor_plugin() -> ModelArmorPlugin | None:
-    """MODEL_ARMOR_TEMPLATE が設定されていればプラグインを返す。未設定なら None"""
     template_id = os.environ.get("MODEL_ARMOR_TEMPLATE")
     if not template_id:
         logger.info("MODEL_ARMOR_TEMPLATE が未設定のため、Model Armor による検査は無効です")

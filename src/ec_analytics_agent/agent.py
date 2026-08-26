@@ -1,8 +1,3 @@
-"""Root Agent と ADK App の定義
-
-Root は初回の意図判定と DataAnalystAgent への handoff を担い、自身はデータアクセスを行わない。
-"""
-
 import os
 
 from google.adk.agents.context_cache_config import ContextCacheConfig
@@ -31,9 +26,7 @@ app = App(
     name="ec_analytics_agent",
     root_agent=root_agent,
     plugins=[plugin for plugin in plugins if plugin is not None],
-    # handoff のたびに system instruction とツールが入れ替わり、プロンプト全体が再送される。
-    # エージェントごとにキャッシュを持たせて再送を避ける。
-    # ただしキャッシュ適用時は ADK が system_instruction を None にするため、
-    # 評価の AgentDetails が組み立てられない。make eval では無効化する
+    # 適用時は ADK が system_instruction を None にし評価が組み立てられないため、
+    # make eval では ADK_DISABLE_CONTEXT_CACHE で無効化する
     context_cache_config=None if os.environ.get("ADK_DISABLE_CONTEXT_CACHE") else ContextCacheConfig(min_tokens=2048),
 )

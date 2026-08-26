@@ -1,11 +1,5 @@
-"""Model Armor テンプレートのデプロイ CLI
-
-Usage:
-    GOOGLE_CLOUD_PROJECT=<project_id> python model_armor/deploy.py [name ...]
-
-definitions/*.json を順に upsert する。引数でファイル名 (拡張子なし) を指定すると対象を絞れる。
-ファイル名がテンプレート ID を兼ねる (ec_analytics.json -> ec-analytics)。
-"""
+# Usage: GOOGLE_CLOUD_PROJECT=<project_id> python model_armor/deploy.py [name ...]
+# ファイル名がテンプレート ID を兼ねる (ec_analytics.json -> ec-analytics)
 
 import json
 import logging

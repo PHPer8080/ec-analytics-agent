@@ -1,12 +1,5 @@
-"""Conversational Analytics Data Agent のデプロイ CLI
-
-Usage:
-    GOOGLE_CLOUD_PROJECT=<project_id> python data_agents/deploy.py [name ...]
-
-definitions/*.json を順に upsert する。引数でファイル名 (拡張子なし) を指定すると対象を絞れる。
-ファイル名が参照先データセット名と Data Agent ID を兼ねる (jaffle_shop.json -> ec-analytics-jaffle-shop)。
-project_id は GOOGLE_CLOUD_PROJECT env var を最優先で解決し、なければ ADC から取得する。
-"""
+# Usage: GOOGLE_CLOUD_PROJECT=<project_id> python data_agents/deploy.py [name ...]
+# ファイル名が参照先データセット名と Data Agent ID を兼ねる (jaffle_shop.json -> ec-analytics-jaffle-shop)
 
 import logging
 import os
