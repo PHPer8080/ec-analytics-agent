@@ -67,7 +67,7 @@ make eval
 | `normal` | 模範解答との一致 | `final_response_match_v2` | 組み込み (LLM Judge) | - |
 | `normal` | ハルシネーション | `hallucinations_v1` | 組み込み (LLM Judge) | - |
 | `normal` | 数値の単位 | `response_format` | カスタム | - |
-| `normal` | スキル宣言とロード | `skill_declaration` | カスタム | - |
+| `normal` | スキルのロード | `skill_usage` | カスタム | - |
 | `normal` | ツール呼び出しの実行 | `tool_call_integrity` | カスタム | - |
 | `normal` | エージェントの完遂 | `agent_completion` | カスタム | - |
 | `abnormal_pii` | Model Armor の PII 検出 | `pii_guard` | カスタム | - |
@@ -77,7 +77,7 @@ make eval
 | `scenario_quality` | ツール利用 (2 項目) | `rubric_based_tool_use_quality_v1` | 組み込み (LLM Judge) | ✅ |
 | `scenario_quality` | 数値の単位 | `response_format` | カスタム | - |
 | `scenario_quality` | エージェントの完遂 | `agent_completion` | カスタム | - |
-| `scenario_quality` | スキル宣言とロード | `skill_declaration` | カスタム | - |
+| `scenario_quality` | スキルのロード | `skill_usage` | カスタム | - |
 | `scenario_quality` | ツール呼び出しの実行 | `tool_call_integrity` | カスタム | - |
 | `scenario_conversation` | タスク達成 | `multi_turn_task_success_v1` | 組み込み (LLM Judge) | - |
 | `scenario_conversation` | 軌跡品質 | `multi_turn_trajectory_quality_v1` | 組み込み (LLM Judge) | - |
