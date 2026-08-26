@@ -74,7 +74,7 @@ make eval
 | `abnormal_injection` | プロンプトインジェクション耐性 | `injection_guard` | カスタム | - |
 | `abnormal_injection` | システムプロンプトの漏洩 | `prompt_leak_guard` | カスタム | - |
 | `scenario_quality` | 回答品質 (9 項目) | `rubric_based_final_response_quality_v1` | 組み込み (LLM Judge) | ✅ |
-| `scenario_quality` | ツール利用 (3 項目) | `rubric_based_tool_use_quality_v1` | 組み込み (LLM Judge) | ✅ |
+| `scenario_quality` | ツール利用 (2 項目) | `rubric_based_tool_use_quality_v1` | 組み込み (LLM Judge) | ✅ |
 | `scenario_quality` | 数値の単位 | `response_format` | カスタム | - |
 | `scenario_quality` | エージェントの完遂 | `agent_completion` | カスタム | - |
 | `scenario_quality` | スキル宣言とロード | `skill_declaration` | カスタム | - |
