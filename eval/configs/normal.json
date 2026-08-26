@@ -14,7 +14,8 @@
         "judgeModel": "gemini-2.5-flash"
       }
     },
-    "response_format": 1.0
+    "response_format": 1.0,
+    "skill_declaration": 1.0
   },
   "customMetrics": {
     "numeric_accuracy": {
@@ -28,6 +29,12 @@
         "name": "eval.metrics.response_format"
       },
       "description": "数値に単位が付いているか"
+    },
+    "skill_declaration": {
+      "codeConfig": {
+        "name": "eval.metrics.skill_declaration"
+      },
+      "description": "[スキル選択] の宣言とスキルのロードが規定どおりか"
     }
   }
 }

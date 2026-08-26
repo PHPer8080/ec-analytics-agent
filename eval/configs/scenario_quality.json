@@ -97,7 +97,8 @@
       ]
     },
     "response_format": 1.0,
-    "agent_completion": 1.0
+    "agent_completion": 1.0,
+    "skill_declaration": 1.0
   },
   "customMetrics": {
     "response_format": {
@@ -111,6 +112,12 @@
         "name": "eval.metrics.agent_completion"
       },
       "description": "エージェントが応答を完遂しているか"
+    },
+    "skill_declaration": {
+      "codeConfig": {
+        "name": "eval.metrics.skill_declaration"
+      },
+      "description": "[スキル選択] の宣言とスキルのロードが規定どおりか"
     }
   }
 }
