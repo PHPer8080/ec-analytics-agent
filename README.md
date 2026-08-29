@@ -21,9 +21,10 @@ Google ADK + Gemini によるマルチエージェント構成で、Conversation
 
 ```
 App (name="ec_analytics_agent")
-├─ plugins                              いずれも env で有効化、両エージェントに適用
-│  ├─ ModelArmorPlugin                  before/after_model_callback で入出力を検査
-│  └─ BigQueryAgentAnalyticsPlugin      行動ログを BigQuery に記録
+├─ plugins                              両エージェントに適用
+│  ├─ EmptyTurnRetryPlugin              常時有効。モデル失敗と空応答を検知してリトライ
+│  ├─ ModelArmorPlugin                  env で有効化。before/after_model_callback で入出力を検査
+│  └─ BigQueryAgentAnalyticsPlugin      env で有効化。行動ログを BigQuery に記録
 └─ root_agent
    └─ ec_analytics_root                 オーケストレーター、データアクセスはしない
       ├─ model: gemini-2.5-flash-lite
@@ -69,21 +70,21 @@ make eval
 | `normal` | 数値の単位 | `response_format` | カスタム | - |
 | `normal` | スキルのロード | `skill_usage` | カスタム | - |
 | `normal` | ツール呼び出しの実行 | `tool_call_integrity` | カスタム | - |
-| `normal` | エージェントの完遂 | `agent_completion` | カスタム | - |
+| `normal` | 空応答の検知 | `agent_completion` | カスタム | - |
 | `abnormal_pii` | Model Armor の PII 検出 | `pii_guard` | カスタム | - |
 | `abnormal_injection` | プロンプトインジェクション耐性 | `injection_guard` | カスタム | - |
 | `abnormal_injection` | システムプロンプトの漏洩 | `prompt_leak_guard` | カスタム | - |
 | `scenario_quality` | 回答品質 (9 項目) | `rubric_based_final_response_quality_v1` | 組み込み (LLM Judge) | ✅ |
 | `scenario_quality` | ツール利用 (2 項目) | `rubric_based_tool_use_quality_v1` | 組み込み (LLM Judge) | ✅ |
 | `scenario_quality` | 数値の単位 | `response_format` | カスタム | - |
-| `scenario_quality` | エージェントの完遂 | `agent_completion` | カスタム | - |
+| `scenario_quality` | 空応答の検知 | `agent_completion` | カスタム | - |
 | `scenario_quality` | スキルのロード | `skill_usage` | カスタム | - |
 | `scenario_quality` | ツール呼び出しの実行 | `tool_call_integrity` | カスタム | - |
 | `scenario_conversation` | タスク達成 | `multi_turn_task_success_v1` | 組み込み (LLM Judge) | - |
 | `scenario_conversation` | 軌跡品質 | `multi_turn_trajectory_quality_v1` | 組み込み (LLM Judge) | - |
 | `scenario_conversation` | ツール利用 (3 項目) | `rubric_based_tool_use_quality_v1` | 組み込み (LLM Judge) | ✅ |
 | `scenario_conversation` | シミュレーターの忠実性 | `per_turn_user_simulator_quality_v1` | 組み込み (LLM Judge) | - |
-| `scenario_conversation` | エージェントの完遂 | `agent_completion` | カスタム | - |
+| `scenario_conversation` | 空応答の検知 | `agent_completion` | カスタム | - |
 | `scenario_conversation` | ツール呼び出しの実行 | `tool_call_integrity` | カスタム | - |
 
 ## セットアップ
@@ -167,7 +168,7 @@ make deploy-analytics-dataset
 cp .env.example .env
 ```
 
-プラグインは既定で無効で、`.env` に値を入れると有効になる。
+`EmptyTurnRetryPlugin` は常時有効 (設定不要)。残り 2 つは既定で無効で、`.env` に値を入れると有効になる。
 
 | env var | 値 |
 |---|---|

@@ -8,7 +8,7 @@ from google.adk.models.google_llm import Gemini
 from .agents import data_analyst_agent
 from .agents.data_analyst import RETRY_OPTIONS
 from .guards import DATA_AGENT_SUMMARY
-from .plugins import build_bigquery_analytics_plugin, build_model_armor_plugin
+from .plugins import build_bigquery_analytics_plugin, build_model_armor_plugin, build_reflect_retry_plugin
 from .prompts import ROOT_DESCRIPTION, ROOT_SYSTEM_PROMPT
 
 root_agent = LlmAgent(
@@ -19,7 +19,7 @@ root_agent = LlmAgent(
     sub_agents=[data_analyst_agent],
 )
 
-plugins = [build_model_armor_plugin(), build_bigquery_analytics_plugin()]
+plugins = [build_model_armor_plugin(), build_bigquery_analytics_plugin(), build_reflect_retry_plugin()]
 
 # name はエージェントを読み込むディレクトリ名と揃える。揃えないと Runner が警告する
 app = App(
