@@ -106,7 +106,7 @@
       "codeConfig": {
         "name": "eval.metrics.agent_completion"
       },
-      "description": "エージェントが応答を完遂しているか"
+      "description": "テキストを出さずにターンを終えていないか"
     },
     "skill_usage": {
       "codeConfig": {

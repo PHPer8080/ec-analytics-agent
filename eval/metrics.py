@@ -20,11 +20,6 @@ PROMPT_HEADINGS = frozenset(
 TEXT_TOOL_CALL = re.compile(
     r"tool_code|tool_outputs|print\(\s*(?:transfer_to_agent|ask_data_agent|load_skill|load_skill_resource|default_api)\b"
 )
-# 「次に確認すべきは〜です」の提案形と「〜しますか？」の確認は正常なので断定形だけを拾う
-INCOMPLETE_TAIL = re.compile(
-    r"(?:これから|続いて|次に|引き続き|まず|今後)[^。．！？\n]*"
-    r"(?:します|いたします|してみます|していきます|する予定です)[。．]?\s*$"
-)
 # `2024-09-01` と `2024年9月1日` はゼロ埋めの差で別の数値列になるため比較前に除去する
 DATE_LITERAL = re.compile(r"\d{4}\s*[-/年]\s*\d{1,2}\s*[-/月]\s*\d{1,2}\s*日?")
 BARE_NUMBER = re.compile(r"(?<![\d\-/年月日])\d[\d,]*(?:\.\d+)?(?![\d,.]*\s*(?:ドル|円|%|人|件|日|年|月))")
@@ -168,8 +163,8 @@ def agent_completion(
 ) -> EvaluationResult:
     scores = []
     for invocation in actual:
-        text = response_text(invocation).strip()
-        ok = bool(text) and not INCOMPLETE_TAIL.search(text)
+        # 中身の完結性は judge が見る。ここは空応答だけを拾う
+        ok = bool(response_text(invocation).strip())
         scores.append((invocation, 1.0 if ok else 0.0))
     return build_result(scores, threshold_of(metric))
 
