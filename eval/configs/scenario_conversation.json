@@ -68,7 +68,7 @@
       "codeConfig": {
         "name": "eval.metrics.agent_completion"
       },
-      "description": "テキストを出さずにターンを終えていないか"
+      "description": "ターンを完遂しているか（空応答と定型文フォールバックを失敗とする）"
     }
   }
 }

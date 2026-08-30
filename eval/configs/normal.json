@@ -1,6 +1,6 @@
 {
   "criteria": {
-    "numeric_accuracy": 0.9,
+    "numeric_accuracy": 1.0,
     "final_response_match_v2": {
       "threshold": 0.7,
       "judgeModelOptions": {
@@ -11,7 +11,7 @@
     "hallucinations_v1": {
       "threshold": 0.8,
       "judgeModelOptions": {
-        "judgeModel": "gemini-2.5-flash"
+        "judgeModel": "gemini-2.5-pro"
       }
     },
     "response_format": 1.0,
@@ -24,7 +24,7 @@
       "codeConfig": {
         "name": "eval.metrics.numeric_accuracy"
       },
-      "description": "期待応答の数値が実応答に現れるか"
+      "description": "期待応答の数値がすべて実応答に現れるか（期待応答には問いが求めた値だけを書く）"
     },
     "response_format": {
       "codeConfig": {
@@ -48,7 +48,7 @@
       "codeConfig": {
         "name": "eval.metrics.agent_completion"
       },
-      "description": "テキストを出さずにターンを終えていないか"
+      "description": "ターンを完遂しているか（空応答と定型文フォールバックを失敗とする）"
     }
   }
 }

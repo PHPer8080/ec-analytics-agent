@@ -4,6 +4,7 @@ from google.adk.evaluation.eval_case import ConversationScenario, Invocation, ge
 from google.adk.evaluation.eval_metrics import EvalMetric, EvalStatus
 from google.adk.evaluation.evaluator import EvaluationResult, PerInvocationResult
 
+from ec_analytics_agent.plugins.reflect_retry import BLOCKED_TEXT, FALLBACK_TEXT
 from ec_analytics_agent.prompts import DATA_ANALYST_SYSTEM_PROMPT, ROOT_SYSTEM_PROMPT
 
 BLOCKED_PREFIX = "安全性チェックによりブロックされました"
@@ -22,8 +23,19 @@ TEXT_TOOL_CALL = re.compile(
 )
 # `2024-09-01` と `2024年9月1日` はゼロ埋めの差で別の数値列になるため比較前に除去する
 DATE_LITERAL = re.compile(r"\d{4}\s*[-/年]\s*\d{1,2}\s*[-/月]\s*\d{1,2}\s*日?")
-BARE_NUMBER = re.compile(r"(?<![\d\-/年月日])\d[\d,]*(?:\.\d+)?(?![\d,.]*\s*(?:ドル|円|%|人|件|日|年|月))")
-UNIT_HINT = re.compile(r"(ドル|円|%|人|件|日)")
+# 単位の検査は本文だけを対象にする。表は単位が隣のセルや見出しにあり、
+# コード・箇条書き番号・リソース名・日時・比率はそもそも単位が付かない
+NON_PROSE = [
+    re.compile(r"```.*?```", re.DOTALL),
+    re.compile(r"^[ \t]*\|.*$", re.MULTILINE),
+    re.compile(r"^[ \t]*[*\-+]?\s*\**\s*\d+[.)]", re.MULTILINE),
+    re.compile(r"\S*/\S*|[A-Za-z0-9_-]*\d[A-Za-z0-9_-]*-[A-Za-z]\S*"),
+    re.compile(r"\d{4}\s*[-/年]\s*\d{1,2}(\s*[-/月]\s*\d{1,2}\s*日?)?|\d{1,2}:\d{2}(:\d{2})?"),
+    re.compile(r"\d+(?:\.\d+)?\s*:\s*\d+(?:\.\d+)?"),
+]
+UNIT = r"(?:万|千|億)?\s*(?:ドル|円|%|％|人|件|日|ヶ月|か月|カ月|月|年|個|倍|回|店舗|点|位|割|種類)"
+# 範囲表記 (11〜12 ドル) は後続の数値と単位まで見る
+BARE_NUMBER = re.compile(r"(?<![\d.])\d[\d,]*(?:\.\d+)?(?![\d,.]*\s*(?:[〜~ー-]\s*[\d,.]+\s*)?" + UNIT + r")")
 ANALYSIS_SKILLS = frozenset({"metric-interpretation", "analysis-workflow"})
 
 
@@ -70,8 +82,9 @@ def response_format(
     scores = []
     for invocation in actual:
         text = response_text(invocation)
-        ok = not BARE_NUMBER.search(text) or bool(UNIT_HINT.search(text))
-        scores.append((invocation, 1.0 if ok else 0.0))
+        for pattern in NON_PROSE:
+            text = pattern.sub(" ", text)
+        scores.append((invocation, 0.0 if BARE_NUMBER.search(text) else 1.0))
     return build_result(scores, threshold_of(metric))
 
 
@@ -163,8 +176,9 @@ def agent_completion(
 ) -> EvaluationResult:
     scores = []
     for invocation in actual:
-        # 中身の完結性は judge が見る。ここは空応答だけを拾う
-        ok = bool(response_text(invocation).strip())
+        # 定型文フォールバックは空応答を塞ぐだけで、ターンは完遂していない
+        text = response_text(invocation).strip()
+        ok = bool(text) and text not in (FALLBACK_TEXT, BLOCKED_TEXT)
         scores.append((invocation, 1.0 if ok else 0.0))
     return build_result(scores, threshold_of(metric))
 
