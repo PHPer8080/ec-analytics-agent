@@ -4,9 +4,10 @@ from google.adk.agents.context_cache_config import ContextCacheConfig
 from google.adk.agents.llm_agent import LlmAgent
 from google.adk.apps import App
 from google.adk.models.google_llm import Gemini
+from google.genai import types
 
 from .agents import data_analyst_agent
-from .agents.data_analyst import RETRY_OPTIONS
+from .agents.data_analyst import RETRY_OPTIONS, SAFETY_SETTINGS
 from .guards import DATA_AGENT_SUMMARY
 from .plugins import build_bigquery_analytics_plugin, build_model_armor_plugin, build_reflect_retry_plugin
 from .prompts import ROOT_DESCRIPTION, ROOT_SYSTEM_PROMPT
@@ -17,6 +18,7 @@ root_agent = LlmAgent(
     description=ROOT_DESCRIPTION,
     instruction=ROOT_SYSTEM_PROMPT.format(DATA_AGENT_SUMMARY=DATA_AGENT_SUMMARY),
     sub_agents=[data_analyst_agent],
+    generate_content_config=types.GenerateContentConfig(safety_settings=SAFETY_SETTINGS),
 )
 
 plugins = [build_model_armor_plugin(), build_bigquery_analytics_plugin(), build_reflect_retry_plugin()]

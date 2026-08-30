@@ -16,6 +16,17 @@ RETRY_OPTIONS = types.HttpRetryOptions(
     attempts=5, initial_delay=2, max_delay=60, exp_base=2, http_status_codes=[429, 503]
 )
 
+# Gemini 組み込みのコンテンツフィルタを既定任せにせず明示する
+SAFETY_SETTINGS = [
+    types.SafetySetting(category=category, threshold=types.HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE)
+    for category in (
+        types.HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+        types.HarmCategory.HARM_CATEGORY_HARASSMENT,
+        types.HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+        types.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+    )
+]
+
 credentials, _ = google.auth.default(scopes=["https://www.googleapis.com/auth/cloud-platform"])
 
 # 探索系ツール (list_accessible_data_agents / get_data_agent_info) は公開しない
@@ -33,4 +44,5 @@ data_analyst_agent = LlmAgent(
     tools=[data_toolset, skill_toolset],
     before_tool_callback=[block_destructive_sql_intent, restrict_data_agent],
     planner=BuiltInPlanner(thinking_config=types.ThinkingConfig(thinking_budget=8000)),
+    generate_content_config=types.GenerateContentConfig(safety_settings=SAFETY_SETTINGS),
 )
