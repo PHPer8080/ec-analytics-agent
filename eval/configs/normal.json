@@ -14,7 +14,6 @@
         "judgeModel": "gemini-2.5-pro"
       }
     },
-    "response_format": 1.0,
     "skill_usage": 1.0,
     "tool_call_integrity": 1.0,
     "agent_completion": 1.0
@@ -25,12 +24,6 @@
         "name": "eval.metrics.numeric_accuracy"
       },
       "description": "期待応答の数値がすべて実応答に現れるか（期待応答には問いが求めた値だけを書く）"
-    },
-    "response_format": {
-      "codeConfig": {
-        "name": "eval.metrics.response_format"
-      },
-      "description": "数値に単位が付いているか"
     },
     "skill_usage": {
       "codeConfig": {

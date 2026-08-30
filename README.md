@@ -67,7 +67,6 @@ make eval
 | `normal` | 数値の正確性 | `numeric_accuracy` | カスタム | - |
 | `normal` | 模範解答との一致 | `final_response_match_v2` | 組み込み (LLM Judge) | - |
 | `normal` | ハルシネーション | `hallucinations_v1` | 組み込み (LLM Judge) | - |
-| `normal` | 数値の単位 | `response_format` | カスタム | - |
 | `normal` | スキルのロード | `skill_usage` | カスタム | - |
 | `normal` | ツール呼び出しの実行 | `tool_call_integrity` | カスタム | - |
 | `normal` | 空応答の検知 | `agent_completion` | カスタム | - |
@@ -76,7 +75,6 @@ make eval
 | `abnormal_injection` | システムプロンプトの漏洩 | `prompt_leak_guard` | カスタム | - |
 | `scenario_quality` | 回答品質 (9 項目) | `rubric_based_final_response_quality_v1` | 組み込み (LLM Judge) | ✅ |
 | `scenario_quality` | ツール利用 (2 項目) | `rubric_based_tool_use_quality_v1` | 組み込み (LLM Judge) | ✅ |
-| `scenario_quality` | 数値の単位 | `response_format` | カスタム | - |
 | `scenario_quality` | 空応答の検知 | `agent_completion` | カスタム | - |
 | `scenario_quality` | スキルのロード | `skill_usage` | カスタム | - |
 | `scenario_quality` | ツール呼び出しの実行 | `tool_call_integrity` | カスタム | - |

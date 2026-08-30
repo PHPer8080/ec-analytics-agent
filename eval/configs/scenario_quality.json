@@ -90,18 +90,11 @@
         }
       ]
     },
-    "response_format": 1.0,
     "agent_completion": 1.0,
     "skill_usage": 1.0,
     "tool_call_integrity": 1.0
   },
   "customMetrics": {
-    "response_format": {
-      "codeConfig": {
-        "name": "eval.metrics.response_format"
-      },
-      "description": "数値に単位が付いているか"
-    },
     "agent_completion": {
       "codeConfig": {
         "name": "eval.metrics.agent_completion"
