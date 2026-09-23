@@ -55,3 +55,4 @@ application_default_credentials.json
 .vscode/
 .pre-commit-config.yaml
 CLAUDE.md
+AGENTS.md

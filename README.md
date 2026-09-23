@@ -52,6 +52,7 @@ App (name="ec_analytics_agent")
 
 ```bash
 make eval
+make eval EVAL_STORAGE_URI=gs://<bucket>  # ローカルに加えて GCS の evals/ に同期
 ```
 
 | eval set | ケース | シミュレーター |

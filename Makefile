@@ -13,6 +13,9 @@ PROJECT_ID       ?= $(or $(GOOGLE_CLOUD_PROJECT),$(shell gcloud config get-value
 ANALYTICS_DATASET ?= ec_analytics_agent_logs
 ANALYTICS_LOCATION ?= us-central1
 
+# 評価結果の同期先 (gs://<bucket>)。ローカルに書き出した後で <bucket>/evals/ に同期する
+EVAL_STORAGE_URI ?=
+
 help:  ## 利用可能なターゲットを表示
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  \033[36m%-22s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
@@ -37,6 +40,8 @@ eval:  ## ローカル評価を実行 (要 ADC, MODEL_ARMOR_TEMPLATE)
 		$(ADK) eval src/ec_analytics_agent eval/evalsets/$$name.json \
 		  --config_file_path eval/configs/$$name.json || exit 1; \
 	done
+	$(if $(EVAL_STORAGE_URI),gcloud storage rsync src/ec_analytics_agent/.adk/eval_history \
+	  $(EVAL_STORAGE_URI)/evals)
 
 deploy-analytics-dataset:  ## 行動ログ用の BigQuery データセットを作成 (要 ADC)
 	@bq --project_id=$(PROJECT_ID) show --dataset $(PROJECT_ID):$(ANALYTICS_DATASET) >/dev/null 2>&1 \
