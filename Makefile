@@ -8,6 +8,10 @@ PYTHON ?= $(UV) run python
 export ADK_SUPPRESS_EXPERIMENTAL_FEATURE_WARNINGS := 1
 export PYTHONWARNINGS := ignore::UserWarning:google.adk.dependencies.vertexai
 
+# gemini-3.8-flash は us-central1 に無く、eval の judge (gemini-2.5-*) は us に無い。両方が動くのは global だけ。
+# ADK はシェルの env を .env より優先するため、.env ではなくここで上書きする
+export GOOGLE_CLOUD_LOCATION := global
+
 # 行動ログの保存先。GOOGLE_CLOUD_PROJECT 未設定なら gcloud config から解決する
 PROJECT_ID       ?= $(or $(GOOGLE_CLOUD_PROJECT),$(shell gcloud config get-value project 2>/dev/null))
 ANALYTICS_DATASET ?= ec_analytics_agent_logs

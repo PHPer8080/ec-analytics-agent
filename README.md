@@ -8,12 +8,12 @@ Google ADK + Gemini によるマルチエージェント構成で、Conversation
 ### 技術スタック
 
 - **Google ADK** 2.7.1 — マルチエージェント構成、Skill、Plugin、Guard
-- **Gemini** — `gemini-2.5-flash-lite` (Root) / `gemini-2.5-flash` (DataAnalyst)
+- **Gemini** — `gemini-3.8-flash` (Root / DataAnalyst、`global` リージョン)
 - **Conversational Analytics Data Agent** — 自然言語からの BigQuery 問い合わせ
 - **BigQuery** — 分析対象データと行動ログの格納先
 - **Model Armor** — 入出力の安全性検査 (インジェクション / RAI / 悪意ある URI / PII)
 - **Python 3.12 / uv** — 実行環境と依存管理
-- **ADK Web** — ローカル UI (`adk web`)
+- **ADK Web** — ローカル UI (`make web` で起動。リージョンを `global` に固定するため `adk web` を直接使わない)
 
 ### 構成
 
@@ -27,11 +27,12 @@ App (name="ec_analytics_agent")
 │  └─ BigQueryAgentAnalyticsPlugin      env で有効化。行動ログを BigQuery に記録
 └─ root_agent
    └─ ec_analytics_root                 オーケストレーター、データアクセスはしない
-      ├─ model: gemini-2.5-flash-lite
+      ├─ model: gemini-3.8-flash
+      ├─ planner: thinking_level=LOW
       └─ sub_agents
          └─ data_analyst                ユーザー応答の主担当
-            ├─ model: gemini-2.5-flash
-            ├─ planner: thinking_budget=8000
+            ├─ model: gemini-3.8-flash
+            ├─ planner: thinking_level=MEDIUM
             ├─ tools: DataAgentToolset, SkillToolset
             └─ before_tool_callback: [block_destructive_sql_intent, restrict_data_agent]
 ```
