@@ -10,7 +10,7 @@ from ..guards import DATA_AGENT_TABLE, block_destructive_sql_intent, restrict_da
 from ..prompts import DATA_ANALYST_DESCRIPTION, DATA_ANALYST_SYSTEM_PROMPT
 from ..skills import skill_toolset
 
-# Gemini 2.5 系は動的共有クォータで運用されており 429 が一時的に返る。
+# Gemini は動的共有クォータで運用されており 429 が一時的に返る。
 # コンソールから上限を引き上げられないため指数バックオフで吸収する
 RETRY_OPTIONS = types.HttpRetryOptions(
     attempts=5, initial_delay=2, max_delay=60, exp_base=2, http_status_codes=[429, 503]
@@ -37,12 +37,12 @@ data_toolset = DataAgentToolset(
 )
 
 data_analyst_agent = LlmAgent(
-    model=Gemini(model="gemini-2.5-flash", retry_options=RETRY_OPTIONS),
+    model=Gemini(model="gemini-3.8-flash", retry_options=RETRY_OPTIONS),
     name="data_analyst",
     description=DATA_ANALYST_DESCRIPTION,
     instruction=DATA_ANALYST_SYSTEM_PROMPT.format(DATA_AGENT_TABLE=DATA_AGENT_TABLE),
     tools=[data_toolset, skill_toolset],
     before_tool_callback=[block_destructive_sql_intent, restrict_data_agent],
-    planner=BuiltInPlanner(thinking_config=types.ThinkingConfig(thinking_budget=8000)),
+    planner=BuiltInPlanner(thinking_config=types.ThinkingConfig(thinking_level=types.ThinkingLevel.MEDIUM)),
     generate_content_config=types.GenerateContentConfig(safety_settings=SAFETY_SETTINGS),
 )
